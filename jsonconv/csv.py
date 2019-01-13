@@ -1,5 +1,7 @@
 import csv
 
+from . import common
+
 
 def read(file_path, delimiter=",", **kwargs):
     """Converts CSV file to JSON
@@ -27,9 +29,9 @@ def write(file_path, json_data, delimiter=","):
     """
     with open(file_path, 'w') as csvfile:
         if isinstance(json_data, dict):  # if only contains one row
-            json_data = [json_data]  # put in a list for compatiblity with rest of function
-        columns = json_data[0].keys()  # get first dictionary to find data types
-
+            # put in a list for compatiblity with rest of function
+            json_data = [json_data]
+        columns = common._get_columns(json_data)
         writer = csv.DictWriter(csvfile, fieldnames=columns)
         writer.writeheader()
         writer.writerows(json_data)
